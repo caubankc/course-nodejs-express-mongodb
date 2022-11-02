@@ -1,19 +1,20 @@
 {
   "name": "course",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/caubankc/course-nodejs-express-mongodb.git"
   },
-  "author": "",
+  "author": "Christian Nicole Alderite",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/caubankc/course-nodejs-express-mongodb/issues"
   },
-  "homepage": "https://github.com/caubankc/course-nodejs-express-mongodb#readme"
+  "homepage": "https://github.com/caubankc/course-nodejs-express-mongodb#readme",
+  "description": "NodeJS example"
 }

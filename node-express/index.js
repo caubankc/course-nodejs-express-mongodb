@@ -5,6 +5,9 @@ const morgan = require('morgan')
 // allows us to parse JSON format request
 const bodyParser = require('body-parser')
 
+const { dishAll, dishOne } = require('./routes/dishRouter')
+const { promoAll, promoOne } = require('./routes/promoRouter')
+const { leaderAll, leaderOne } = require('./routes/leaderRouter')
 const hostname = 'localhost'
 const port = 3000
 
@@ -14,60 +17,22 @@ app.use(morgan('dev'))
 // allows us to parse JSON format request
 app.use(bodyParser.json())
 
-// process ALL incoming request prior to individual processing
-app.all('/dishes', (req, res, next) => {
-    res.statusCode = 200
-    res.setHeader('Content-Type', 'text/plain')
-    next()
+app.use('/dishes', dishAll)
+app.use('/dishes/:dishId', (req, res, next) => {
+    req.dishId = req.params.dishId
+    dishOne(req, res, next)
 })
 
-// Send the requested dishes
-app.get('/dishes', (req, res, next) => {
-    res.end('Will send all the dishes...')
+app.use('/promotions', promoAll)
+app.use('/promotions/:promoId', (req, res, next) => {
+    req.promoId = req.params.promoId
+    promoOne(req, res, next)
 })
 
-// Create new dish from received params
-app.post('/dishes', (req, res, next) => {
-    res.end('Will create the dish: ' 
-        + req.body.name
-        + ' with details: '
-        + req.body.description)
-})
-
-// Block update / PUT requests to dishes
-app.put('/dishes', (req, res, next) => {
-    res.statusCode = 403
-    res.end('PUT operation not supported on this endpoint.')
-})
-
-// Delete all dishes
-app.delete('/dishes', (req, res, next) => {
-    res.end('Will delete all the dishes...')
-})
-
-// Send the requested dish
-app.get('/dishes/:dishId', (req, res, next) => {
-    res.end('Will send the dish: ' + req.params.dishId + ' to you.')
-})
-
-// Block POST request to this endpoint
-app.post('/dishes/:dishId', (req, res, next) => {
-    res.statusCode = 403
-    res.end('POST operation not supported on this endpoint.')
-})
-
-// Update a dish
-app.put('/dishes/:dishId', (req, res, next) => {
-    res.write('Updating the dish: ' + req.params.dishId)
-    res.end('Will update the dish: ' 
-        + req.body.name
-        + ' with details: '
-        + req.body.description)
-})
-
-// Delete a dish
-app.delete('/dishes/:dishId', (req, res, next) => {
-    res.end('Deleting dish: ' + req.params.dishId)
+app.use('/leaders', leaderAll)
+app.use('/leaders/:leaderId', (req, res, next) => {
+    req.leaderId = req.params.leaderId
+    leaderOne(req, res, next)
 })
 
 // serve up contents of the public folder
@@ -84,5 +49,4 @@ const server = http.createServer(app)
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}`)
 })
-
 
